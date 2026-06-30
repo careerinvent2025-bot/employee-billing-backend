@@ -5,13 +5,7 @@ dotenv.config();
 
 const { Pool } = pkg;
 
-// const pool = new Pool({
-//   user: process.env.DB_USER,
-//   host: process.env.DB_HOST,
-//   database: process.env.DB_NAME,
-//   password: process.env.DB_PASSWORD,
-//   port: process.env.DB_PORT,
-// });
+const isNeon = process.env.DB_HOST.includes("neon.tech");
 
 const pool = new Pool({
   user: process.env.DB_USER,
@@ -19,9 +13,12 @@ const pool = new Pool({
   database: process.env.DB_NAME,
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
-  ssl: {
-    rejectUnauthorized: false,
-  },
+
+  ssl: isNeon
+    ? {
+        rejectUnauthorized: false,
+      }
+    : false,
 });
 
 export default pool;
